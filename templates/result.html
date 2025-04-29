@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plagiarism Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container results-container">
+        <header>
+            <h1><i class="fas fa-clipboard-check"></i> Plagiarism Analysis Results</h1>
+            <a href="/" class="back-button"><i class="fas fa-arrow-left"></i> Back to Checker</a>
+        </header>
+
+        <main id="resultsMain">
+            <div id="loadingResults">
+                <div class="loader"></div>
+                <p>Retrieving analysis results...</p>
+            </div>
+
+            <div id="resultsContent" class="hidden">
+                <div class="summary-card">
+                    <div class="plagiarism-meter">
+                        <div class="meter-circle">
+                            <svg viewBox="0 0 100 100">
+                                <circle class="meter-bg" cx="50" cy="50" r="45"></circle>
+                                <circle id="meterValue" class="meter-value" cx="50" cy="50" r="45"></circle>
+                            </svg>
+                            <div class="meter-percentage" id="overallPercentage">0%</div>
+                        </div>
+                        <div class="meter-label">Similarity Score</div>
+                    </div>
+
+                    <div class="summary-details">
+                        <div class="summary-item">
+                            <i class="fas fa-link"></i>
+                            <div>
+                                <span id="sourcesCount">0</span>
+                                <label>Sources</label>
+                            </div>
+                        </div>
+                        <div class="summary-item">
+                            <i class="fas fa-highlighter"></i>
+                            <div>
+                                <span id="matchesCount">0</span>
+                                <label>Matches</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="interpretation">
+                    <h3>Interpretation</h3>
+                    <div id="interpretationText">
+                        <!-- Interpretation will be filled by JavaScript -->
+                    </div>
+                </div>
+
+                <h2>Matched Sources</h2>
+                <div id="sourcesContainer">
+                    <!-- Sources and matched content will be displayed here -->
+                </div>
+
+                <div class="no-matches hidden" id="noMatches">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>No plagiarism detected</h3>
+                    <p>Your content appears to be original. No significant matches were found on the web.</p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <p>This tool compares your text against web sources to detect possible instances of plagiarism.</p>
+                <p class="disclaimer">For educational purposes only. Results should be verified manually.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
