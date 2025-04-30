@@ -23,19 +23,12 @@ A web-based application to detect potential plagiarism by comparing text against
    pip install flask nltk requests beautifulsoup4 python-docx PyPDF2
    ```
 
-3. Download required NLTK data:
-   ```python
-   import nltk
-   nltk.download('punkt')
-   nltk.download('stopwords')
-   ```
-
-4. Run the application:
+3. Run the application:
    ```
    python app.py
    ```
 
-5. Open your browser and navigate to:
+4. Open your browser and navigate to:
    ```
    http://localhost:5000
    ```
