@@ -39,6 +39,15 @@ function setupIndexPage() {
             // Add active class to clicked tab
             this.classList.add('active');
             document.getElementById(this.dataset.tab).classList.add('active');
+
+            // Toggle required attributes based on active tab
+            if (this.dataset.tab === 'text-input') {
+                contentInput.setAttribute('required', '');
+                fileInput.removeAttribute('required');
+            } else if (this.dataset.tab === 'file-upload') {
+                contentInput.removeAttribute('required');
+                fileInput.setAttribute('required', '');
+            }
         });
     });
 
@@ -78,7 +87,9 @@ function setupIndexPage() {
     });
 
     // Remove file
-    removeFile.addEventListener('click', function() {
+    removeFile.addEventListener('click', function(e) {
+        e.preventDefault(); // Prevent form submission
+        e.stopPropagation(); // Prevent triggering other events
         fileInput.value = '';
         fileInfo.classList.add('hidden');
     });
