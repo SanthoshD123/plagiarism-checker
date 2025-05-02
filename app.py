@@ -162,8 +162,10 @@ def check_plagiarism():
 
 def analyze_text(text):
     try:
+        print(f"Starting plagiarism analysis for text of length {len(text)}")
         # This function runs in a separate thread
         results = detector.detect_plagiarism(text)
+        print(f"Analysis complete. Found {len(results)} matches.")
 
         # Create directory if it doesn't exist
         os.makedirs('static', exist_ok=True)
@@ -171,9 +173,11 @@ def analyze_text(text):
         # Store results in a file (in a real app, you'd use a database)
         with open('static/last_results.json', 'w') as f:
             json.dump(results, f)
+            print("Results saved to last_results.json")
     except Exception as e:
         # Log the error but continue
         print(f"Error in analyze_text: {e}")
+        traceback.print_exc()
         # Save empty results to indicate completion
         with open('static/last_results.json', 'w') as f:
             json.dump([], f)
@@ -238,6 +242,7 @@ def get_results():
             'message': 'Analysis still in progress or no results available'
         })
     except Exception as e:
+        app.logger.error(f"Error in get_results: {e}\n{traceback.format_exc()}")
         return jsonify({
             'status': 'error',
             'message': f'Error retrieving results: {str(e)}'
@@ -247,6 +252,51 @@ def get_results():
 @app.route('/result')
 def result_page():
     return render_template('result.html')
+
+
+@app.route('/test')
+def test_route():
+    """Test route to verify plagiarism detection is working"""
+    try:
+        print("Starting test detection...")
+        test_text = "Python is an interpreted high-level general-purpose programming language. Its design philosophy emphasizes code readability with its use of significant indentation."
+        test_results = detector.test_detection(test_text)
+
+        return jsonify({
+            'status': 'success',
+            'message': 'Test completed',
+            'results': test_results
+        })
+    except Exception as e:
+        app.logger.error(f"Error in test route: {e}\n{traceback.format_exc()}")
+        return jsonify({
+            'status': 'error',
+            'message': f'Test failed: {str(e)}'
+        })
+
+
+@app.route('/debug')
+def debug_info():
+    """Endpoint to provide debugging information about the application state"""
+    info = {
+        'status': 'running',
+        'has_results_file': os.path.exists('static/last_results.json'),
+        'results_file_size': os.path.getsize('static/last_results.json') if os.path.exists(
+            'static/last_results.json') else 0,
+        'detector_initialized': detector is not None
+    }
+
+    # Add results summary if file exists
+    if info['has_results_file']:
+        try:
+            with open('static/last_results.json', 'r') as f:
+                results = json.load(f)
+                info['results_count'] = len(results)
+                info['results_sample'] = results[:2] if results else []
+        except Exception as e:
+            info['results_error'] = str(e)
+
+    return jsonify(info)
 
 
 if __name__ == '__main__':
