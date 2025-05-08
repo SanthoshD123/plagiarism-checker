@@ -1,6 +1,6 @@
 # Plagiarism Checker
 
-A web app to detect potential plagiarism by comparing text against online sources. This tool helps students, writers, and educators identify content similarity and maintain academic integrity.
+A web app to detect potential plagiarism by comparing text against online sources. This tool helps students, writers, and educators identify content similarity and maintain academic integrity. (not yet completed fully)
 
 ## Features
 
